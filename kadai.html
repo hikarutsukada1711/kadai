@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<title>北斗ジャンケン</title>
+</head>
+<body>
+
+<!-- 音 -->
+<audio id="sound_panchi" preload="auto">
+    <source src="music/Hit09-1.mp3" type="audio/mp3">
+</audio>
+<audio id="sound_charge" preload="auto">
+    <source src="music/charge.mp3" type="audio/mp3">
+</audio>
+<audio id="sound_waza" preload="auto">
+    <source src="music/waza.mp3" type="audio/mp3">
+</audio>
+
+
+<header>
+  <h1>北斗ジャンケン</h1>
+</header>
+
+<main>
+
+      <!-- キャラクター -->
+<section>
+    <div class="flex-container">
+        <div class="flex-item">
+            <div class="image-wrap">
+                <img src="./img/kenshiro.jpeg" id="yureru">
+                <meter class="p_gage" max="90" low="20" high="40" value="90"></meter>
+                <div id="p_lastgage">ケンシロウの体力 </div>
+            </div>
+        </div>
+        <div class="flex-item">
+            <div class="image-wrap">
+                <img src="./img/raou.jpeg">
+                <meter class="e_gage" max="90" low="20" high="40" value="90"></meter>
+                <div id="e_lastgage">ラオウの体力 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <!-- 体力ゲージsample -->
+
+
+
+  <ul id="btn">
+    <li id="gu_btn">グー</li>
+    <li id="cho_btn">チョキ</li>
+    <li id="par_btn">パー</li>
+    <li id="waza" style="display:none;">北斗百烈拳</li>
+  </ul>
+
+<input type="button" class="reload" value="もう一度" id="reload" style="display:none;" />
+
+
+<div class="result">
+
+  <div>ラオウが出した手は「<span id="pc_hands">なに？</span>」</div>
+  <div id="judgment">勝敗は？</div>
+
+  <!-- 試合数カウント -->
+  <!-- <div id="disp_match">試合数は</div> -->
+
+  <!-- 試合数カウント -->
+  <!-- <div id="disp_win">勝利数は</div> -->
+
+  <!-- <div id="disp_count">0</div> -->
+  <!-- <input type="button" value="カウントアップ" id="btn_count_up" /> -->
+  <!-- <input type="button" value="リセット" id="btn_reset" /> -->
+
+  <!-- 体力ゲージsample -->
+  <!-- <meter class="p_gage" max="90" low="20" high="40" value="90"></meter> -->
+  <!-- <meter class="e_gage" max="90" low="20" high="40" value="90"></meter> -->
+
+
+</div>
+
+</main>
+
+<footer></footer>
+
+<script>
+//じゃんけん用のSCRIPTを書いてください
+//じゃんけん用のSCRIPTを書いてください
+//じゃんけん用のSCRIPTを書いてください
+//じゃんけん用のSCRIPTを書いてください
+//じゃんけん用のSCRIPTを書いてください
+
+
+//試合数カウント＆勝利数カウント用の変数
+    var match = 0; // 試合数
+    var win   = 0; // 攻撃
+    var lose  = 0; // 被攻撃
+    var waza  = 0; // 技の音を一回だけカウントする
+
+//tesuto 単純な体力ゲージ
+    var count =0;
+    var power =90;
+    var attack =0;
+    // $(".test").val(power); //体力回復 jQuery部分
+
+
+//グー
+$("#gu_btn").on("click",function(){
+  const num = Math.ceil( Math.random()*3 ); // 1〜3
+    //1==グー,2==チョキ,3==パー
+    $("#sound_panchi").get(0).currentTime = 0;
+      $("#sound_panchi").get(0).play();
+      console.log(win);
+
+      if(power-lose*10 < 50){
+        $("#waza").fadeIn(1000);
+         // //charge音 追加
+        if(waza<1){
+            $("#sound_charge").get(0).currentTime = 0;
+            $("#sound_charge").get(0).play();
+        }
+        //技回数カウント
+        waza ++;
+    }
+
+    // グー あいこの場合
+  if(num == 1){
+    $("#pc_hands").html("グー");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("あいこ");
+    // $("#waza").fadeIn(1000);
+    // //charge音 追加
+    // if(waza<1){
+    //   $("#sound_charge").get(0).currentTime = 0;
+    //   $("#sound_charge").get(0).play();
+    // }
+    // //技回数カウント
+    // waza ++;
+  }
+    // チョキ 攻撃
+  if(num == 2){
+    $("#pc_hands").html("チョキ");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("ケンシロウの攻撃　ラオウにダメージ");
+    match ++;
+    win ++;
+    $("#disp_match").html("試合数は"+match);
+    $("#disp_win").html("勝利数は"+win);
+    $(".e_gage").val(power-win*10); //体力計算 グラフ jQuery部分
+    $("#e_lastgage").html("ラオウの体力 "+ (power-win*10)); //体力計算 文字 jQuery部分
+    //体力ゲージとの連動
+    if(power-win*10 == 0){
+        $("#judgment").html("完全勝利");
+        $("#reload").fadeIn(1000); 
+    }
+}
+
+    // パー ダメージ
+  if(num == 3){
+    $("#pc_hands").html("パー");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("ラオウの攻撃　ケンシロウにダメージ");
+    match ++;
+    lose ++;
+    $(".p_gage").val(power-lose*10); //体力回復 jQuery部分
+    $("#p_lastgage").html("ケンシロウの体力 "+ (power-lose*10)); //体力計算 文字 jQuery部分
+    //体力ゲージとの連動
+    if(power-lose*10 == 0){
+        $("#judgment").html("完全敗北");
+        $("#reload").fadeIn(1000); 
+
+    }
+
+  }
+  
+});
+
+
+//チョキ
+$("#cho_btn").on("click",function(){
+  const num = Math.ceil( Math.random()*3 ); // 1〜3
+    //1==グー,2==チョキ,3==パー
+
+    $("#sound_panchi").get(0).currentTime = 0;
+      $("#sound_panchi").get(0).play();
+
+      if(power-lose*10 < 50){
+        $("#waza").fadeIn(1000);
+         // //charge音 追加
+        if(waza<1){
+            $("#sound_charge").get(0).currentTime = 0;
+            $("#sound_charge").get(0).play();
+        }
+        //技回数カウント
+        waza ++;
+    }
+
+
+  if(num == 1){
+    $("#pc_hands").html("グー");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("ラオウの攻撃　ケンシロウにダメージ");
+    match ++;
+    lose ++;
+    $(".p_gage").val(power-lose*10); //体力回復 jQuery部分
+    $("#p_lastgage").html("ケンシロウの体力 "+ (power-lose*10)); //体力計算 文字 jQuery部分
+    //体力ゲージとの連動
+    if(power-lose*10 == 0){
+        $("#judgment").html("完全敗北");
+        $("#reload").fadeIn(1000); 
+
+    }
+  }
+
+  if(num == 2){
+    $("#pc_hands").html("チョキ");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("あいこ");
+    // $("#waza").fadeIn(1000);
+    // //charge音 追加
+    // if(waza<1){
+    //   $("#sound_charge").get(0).currentTime = 0;
+    //   $("#sound_charge").get(0).play();
+    // }
+    // //技回数カウント
+    // waza ++;
+  }
+
+  if(num == 3){
+    $("#pc_hands").html("パー");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("ケンシロウの攻撃　ラオウにダメージ");
+    match ++;
+    win ++;
+    $("#disp_match").html("試合数は"+match);
+    $("#disp_win").html("勝利数は"+win);
+    $(".e_gage").val(power-win*10); //体力計算 グラフ jQuery部分
+    $("#e_lastgage").html("ラオウの体力 "+ (power-win*10)); //体力計算 文字 jQuery部分
+    //体力ゲージとの連動
+    if(power-win*10 == 0){
+        $("#judgment").html("完全勝利");
+        $("#reload").fadeIn(1000); 
+    }
+  }
+  
+});
+
+//パー
+$("#par_btn").on("click",function(){
+  const num = Math.ceil( Math.random()*3 ); // 1〜3
+    //1==グー,2==チョキ,3==パー
+
+    $("#sound_panchi").get(0).currentTime = 0;
+      $("#sound_panchi").get(0).play();
+
+      if(power-lose*10 < 50){
+        $("#waza").fadeIn(1000);
+         // //charge音 追加
+        if(waza<1){
+            $("#sound_charge").get(0).currentTime = 0;
+            $("#sound_charge").get(0).play();
+        }
+        //技回数カウント
+        waza ++;
+    }
+
+
+  if(num == 1){
+    $("#pc_hands").html("グー");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("ケンシロウの攻撃　ラオウにダメージ");
+    match ++;
+    win ++;
+    $("#disp_match").html("試合数は"+match);
+    $("#disp_win").html("勝利数は"+win);
+    $(".e_gage").val(power-win*10); //体力計算 グラフ jQuery部分
+    $("#e_lastgage").html("ラオウの体力 "+ (power-win*10)); //体力計算 文字 jQuery部分
+    //体力ゲージとの連動
+    if(power-win*10 == 0){
+        $("#judgment").html("完全勝利");
+        $("#reload").fadeIn(1000); 
+    }
+  }
+
+  if(num == 2){
+    $("#pc_hands").html("チョキ");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("ラオウの攻撃　ケンシロウにダメージ");
+    match ++;
+    lose ++;
+    $(".p_gage").val(power-lose*10); //体力回復 jQuery部分
+    $("#p_lastgage").html("ケンシロウの体力 "+ (power-lose*10)); //体力計算 文字 jQuery部分
+    //体力ゲージとの連動
+    if(power-lose*10 == 0){
+        $("#judgment").html("完全敗北");
+        $("#reload").fadeIn(1000); 
+    }
+
+  }
+
+  if(num == 3){
+    $("#pc_hands").html("パー");
+    $("#echo").css("color","#ff0000");
+    $("#judgment").html("あいこ");
+    // $("#waza").fadeIn(1000);
+    // //charge音 追加
+    // if(waza<1){
+    //   $("#sound_charge").get(0).currentTime = 0;
+    //   $("#sound_charge").get(0).play();
+    // }
+    // //技回数カウント
+    // waza ++;
+  }
+  
+});
+
+//必殺技 無条件で勝利
+$("#waza").on("click",function(){
+  const num = Math.ceil( Math.random()*3 ); // 1〜3
+    //1==グー,2==チョキ,3==パー
+    $("#judgment").html("ケンシロウが北斗百烈拳を出した");
+
+    match ++;
+    win = 10;
+    $("#disp_match").html("試合数は"+match);
+    $("#disp_win").html("勝利数は"+win);
+     //waza音 追加
+        $("#sound_waza").get(0).currentTime = 0;
+      $("#sound_waza").get(0).play();
+      $(".e_gage").val(power-win*10);
+      $("#e_lastgage").html("ラオウの体力 "+ (power-win*10)); //体力計算 文字 jQuery部分
+    //体力ゲージとの連動
+    if(power-win*10 <= 0){
+        $("#judgment").html("完全勝利");
+        $("#reload").fadeIn(1000); 
+    }
+
+});
+
+
+////カウントテスト
+
+var cnt = 0;
+
+$("#btn_count_up").on("click",function(){
+    cnt++;
+    $("#disp_count").html(cnt).css('font-size', cnt+'rem');
+    // $("#disp_count").css('font-size', cnt+'rem');
+});
+
+$("#btn_reset").on("click",function(){
+    cnt = 0;
+    match = 0;
+    win = 0;
+    $("#disp_count").html(cnt);
+    $("#disp_match").html("試合数は"+match);
+    $("#disp_win").html("勝利数は"+win);
+    document.location.reload();
+});
+
+$("#reload").on("click",function(){
+    document.location.reload();
+});
+
+
+//tesuto ランタイム体力ゲージ
+//     var count = 0;
+//     
+//     var countup = function(){
+//       console.log(count++);
+//       console.log(power);
+//       var power = setTimeout(countup, 100);
+//       $(".test").val(power); //体力回復 jQuery部分
+//       if(count > 100){
+//         clearTimeout(power);//clearTimeoutで時間処理STOP
+//       }
+//       $("#btn_count_up").on("click",function(){
+//         $(".test").val(power-30); //体力回復 jQuery部分       
+// });      
+//     }
+//     countup();
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

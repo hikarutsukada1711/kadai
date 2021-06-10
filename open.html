@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" href="css/sample2.css">
+    <title>北斗ジャンケン</title>    
+</head>
+<body>
+<!-- 音 -->
+<audio id="sound_coin" preload="auto">
+    <source src="music/coin07.mp3" type="audio/mp3">
+</audio>
+
+
+    <img src="./img/hokuto_opening.PNG"  class="hokuto_image" alt="オープニング">
+
+    <div class="box">
+        <a href="kadai.html" target="_blank" rel="noopener noreferrer" id="open" class="open">PRESS START</a>
+    </div>
+
+
+<script>
+
+$("#open").on("click",function(){
+    $("#sound_coin").get(0).currentTime = 0;
+      $("#sound_coin").get(0).play();
+
+});
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<div></div>
+
+<script>
+// var object1 = {"a":"あ", "b":"い", "c":"う"};
+// console.dir(object1["a"]);
+// console.dir(object1.b);
+// console.dir(object1.c);
+
+var obj=[
+    { fname:"Tarou", Iname:"Yamazaki"},
+    { fname:"Anna", Iname:"Smith"},
+    { fname:"Peter", Iname:"Koji"}
+];
+
+var json = JSON.stringify(obj);
+console.log("JSON:"+json);
+
+
+var obj2 = JSON.parse(json);
+console.dir(obj2);
+
+</script>
+
+
+</body>
+</html>
